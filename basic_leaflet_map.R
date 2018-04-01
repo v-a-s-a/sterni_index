@@ -13,7 +13,7 @@ pal <- colorNumeric(
 map <- leaflet(data=sterni) %>% 
   setView(lat = 52.506955, lng = 13.407455, zoom = 12) %>%
   addProviderTiles('CartoDB.DarkMatterNoLabels') %>%
-  addCircleMarkers(lng = ~lon, lat = ~lat, color = ~pal(cost), stroke = FALSE, radius = 3, fillOpacity = 1) %>%
+  addCircleMarkers(lng = ~lon, lat = ~lat, color = ~pal(cost), stroke = FALSE, radius = 5, fillOpacity = 1) %>%
   addLegend("bottomright", pal = pal, values = ~cost,
             title = "cost",
             opacity = 1)

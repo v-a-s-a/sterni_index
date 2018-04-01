@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html>
     <head>
+        <meta charset="utf-8"/>
         <!-- Following leaflet quickstart: http://leafletjs.com/examples/quick-start/-->
 
         <link rel="stylesheet" href="https://unpkg.com/leaflet@1.3.1/dist/leaflet.css"
@@ -11,17 +12,17 @@
         integrity="sha512-/Nsx9X4HebavoBvEBuyp3I7od5tA0UzAxs+j83KgC8PU0kgB4XiK4Lfe4y4cgBtaRJQEIFCW+oC506aPT2L1zw=="
         crossorigin=""></script>
 
-
+        <script src="http://d3js.org/d3.v3.min.js"></script>
     
     </head>
     <body>
-        <!-- Omnivore via mbostock: https://bl.ocks.org/wboykinm/9372267-->
-        <script src='//api.tiles.mapbox.com/mapbox.js/plugins/leaflet-omnivore/v0.0.1/leaflet-omnivore.min.js'></script>
+        <!-- Omnivore example via mbostock: https://bl.ocks.org/wboykinm/9372267-->
+        <!-- <script src='//api.tiles.mapbox.com/mapbox.js/plugins/leaflet-omnivore/v0.0.1/leaflet-omnivore.min.js'></script> -->
+
+        <!-- d3 integration is from d3noob https://gist.github.com/d3noob/9267535 -->
 
         <div id="mapid" style="width: 600px; height: 400px;"></div>
         
-        <script src='//api.tiles.mapbox.com/mapbox.js/plugins/leaflet-omnivore/v0.0.1/leaflet-omnivore.min.js'></script>
-
         <script>
 
             var map = L.map('mapid').setView([52.506955, 13.407455], 10);
@@ -30,12 +31,52 @@
                 maxZoom: 18,
                 attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, ' +
                     '<a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, ' +
-                    'Imagery © <a href="http://mapbox.com">Mapbox</a>',
+                    'Imagery  <a href="http://mapbox.com">Mapbox</a>',
                 id: 'mapbox.streets'
             }).addTo(map);
 
-            omnivore.csv('https://docs.google.com/spreadsheets/d/e/2PACX-1vQ5PIoUB3bujfpUwi2phvXx_ZecNTpRfTVGc9tq2cgsMQ5uttRxZs86p_cZ_RF9L9FrT8rTxLUNlNwF/pub?output=csv').addTo(map);
-        
+            /* Initialize the SVG layer */
+            var svgLayer = L.svg().addTo(map);
+
+            /* We simply pick up the SVG from the map object */
+            var svg = d3.select("#map").select("svg");
+            var g = svg.append("g");
+
+            // d3.csv('https://docs.google.com/spreadsheets/d/e/2PACX-1vQ5PIoUB3bujfpUwi2phvXx_ZecNTpRfTVGc9tq2cgsMQ5uttRxZs86p_cZ_RF9L9FrT8rTxLUNlNwF/pub?gid=939729708&single=true&output=csv',
+            //     function(data) {console.log(data);
+            //     });
+
+
+            d3.csv('https://docs.google.com/spreadsheets/d/e/2PACX-1vQ5PIoUB3bujfpUwi2phvXx_ZecNTpRfTVGc9tq2cgsMQ5uttRxZs86p_cZ_RF9L9FrT8rTxLUNlNwF/pub?gid=939729708&single=true&output=csv',
+                function(collection) {
+
+                collection.forEach(function(d) {
+                            d.LatLng = new L.LatLng(d.lat, d.lon)
+                        })
+
+                console.log(collection);
+
+                var feature = g.selectAll("cost")
+                    .data(collection)
+                    .enter().append("circle")
+                    .style("stroke", "black")  
+                    .style("opacity", .6) 
+                    .style("fill", "red")
+                    .attr("r", 20);  
+                
+                map.on("viewreset", update);
+                update();
+                function update() {
+                    feature.attr("transform", 
+                    function(d) { 
+                        return "translate("+ 
+                            map.latLngToLayerPoint(d.LatLng).x +","+ 
+                            map.latLngToLayerPoint(d.LatLng).y +")";
+                        }
+                    )
+                }
+            })
+
         </script>
 
         Form: https://goo.gl/forms/A2qCu6ymOy7Hi5bT2

@@ -6,15 +6,15 @@ csv_handle <- getURL('https://docs.google.com/spreadsheets/d/e/2PACX-1vQ5PIoUB3b
 sterni <- read.csv(textConnection(csv_handle))
 
 pal <- colorNumeric(
-  palette = 'Blues',
-  domain = sterni$cost)
+  palette = 'YlOrRd',
+  domain = c(0.50, 8))
 
 
 map <- leaflet(data=sterni) %>% 
   setView(lat = 52.506955, lng = 13.407455, zoom = 12) %>%
-  addProviderTiles('CartoDB.DarkMatterNoLabels') %>%
-  addCircleMarkers(lng = ~lon, lat = ~lat, color = ~pal(cost), stroke = FALSE, radius = 5, fillOpacity = 1) %>%
-  addLegend("bottomright", pal = pal, values = ~cost,
+  addProviderTiles('Stamen.TonerLite') %>%
+  addCircleMarkers(lng = ~lon, lat = ~lat, fillColor = ~pal(cost), radius = 5, fillOpacity = 1, stroke=F) %>%
+  addLegend('bottomright', pal = pal, values = ~cost,
             title = "cost",
             opacity = 1)
 

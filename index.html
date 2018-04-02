@@ -15,6 +15,8 @@
         <script src="https://d3js.org/d3.v3.min.js"></script>
         <script src="L.D3SvgOverlay.min.js"></script>
 
+        <!-- https://github.com/m-hoerz/berlin-shapes -->
+        <script src="leaflet.ajax.min.js"></script>
 
         <!-- http://bl.ocks.org/d3noob/7654694 -->
         <style>
@@ -37,13 +39,12 @@
 
             var map = L.map('mapid').setView([52.506955, 13.407455], 11);
         
-            L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw', {
-                maxZoom: 18,
-                attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, ' +
-                    '<a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, ' +
-                    'Imagery  <a href="http://mapbox.com">Mapbox</a>',
-                id: 'mapbox.streets'
-            }).addTo(map);
+            
+
+            L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Light_Gray_Base/MapServer/tile/{z}/{y}/{x}', {
+                maxZoom: 16,
+                attribution: 'Tiles &copy; Esri &mdash; Esri, DeLorme, NAVTEQ'})
+            .addTo(map);
 
             // Add color scale with legend
             // http://bl.ocks.org/wrobstory/5609856
@@ -55,7 +56,7 @@
 
             var color = d3.scale.threshold()
                     .domain([0, 2, 4, 6, 8, 10])
-                    .range(['#EDF8FB', '#BFD3E6', '#9EBCDA', '#8C96C6', '#8C6BB1', '#88419D', '#6E016B']);
+                    .range(["#ffffcc", "#ffeda0", "#fed976", "#feb24c", "#fd8d3c", "#fc4e2a"]);
 
             var x = d3.scale.linear(d3.interpolateReds)
             .domain([0, 10])
@@ -95,6 +96,7 @@
                 .attr("y", 21)
                 .text('Cost');
 
+            // add data points
             // http://bl.ocks.org/xEviL/4921fff1d70f5601d159
             var shops = [];
             var sterniOverlay = L.d3SvgOverlay(function(sel, proj){
@@ -102,7 +104,7 @@
                 var shopsUpd = sel.selectAll('circle').data(shops);
                 shopsUpd.enter()
                     .append('circle')
-                    .attr('r', 1)
+                    .attr('r', 4)
                     .attr('cx',function(d){return proj.latLngToLayerPoint(d.latLng).x;})
                     .attr('cy',function(d){return proj.latLngToLayerPoint(d.latLng).y;})
                     .attr('stroke','black')
@@ -118,6 +120,20 @@
                     });
                 sterniOverlay.addTo(map);
             });
+
+            // bezirk overlay
+            var myStyle = {
+                "color": "#969696",
+                "weight": 2,
+                "opacity": 0.65
+            };
+
+            var geojsonLayer = new L.GeoJSON.AJAX("berliner-bezirke.geojson", {
+                style: myStyle
+            });
+            
+            geojsonLayer.addTo(map);
+
 
         </script>
 

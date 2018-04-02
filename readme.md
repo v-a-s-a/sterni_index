@@ -1,11 +1,16 @@
-# Test site for recording the cost of a sterni
+# Sterni-index
 
-You can enter datapoints through the google form here:  
-https://goo.gl/forms/A2qCu6ymOy7Hi5bT2
-
-They are added to the map:  
-https://vtrubets.github.io/test_index/
+## [Check out the map.](https://vtrubets.github.io/test_index/)
 
 
-The bezirk outlines were made available by:  
+## [Add some datapoints](https://goo.gl/forms/A2qCu6ymOy7Hi5bT2).
+
+  
+  
+
+### Misc.
+The bezirk outlines:  
 https://github.com/m-hoerz/berlin-shapes
+
+The geoJson loading:
+https://github.com/calvinmetcalf/leaflet-ajax

@@ -7,10 +7,10 @@
 
   
   
-
+  
 ### Misc.
-The bezirk outlines:  
+Bezirk outlines:  
 https://github.com/m-hoerz/berlin-shapes
 
-The geoJson loading:
+GeoJson loading:  
 https://github.com/calvinmetcalf/leaflet-ajax

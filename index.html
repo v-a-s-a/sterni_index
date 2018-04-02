@@ -12,13 +12,9 @@
         integrity="sha512-/Nsx9X4HebavoBvEBuyp3I7od5tA0UzAxs+j83KgC8PU0kgB4XiK4Lfe4y4cgBtaRJQEIFCW+oC506aPT2L1zw=="
         crossorigin=""></script>
 
-        <script src="http://d3js.org/d3.v3.min.js"></script>
+        <script src="https://d3js.org/d3.v3.min.js"></script>
         <script src="L.D3SvgOverlay.min.js"></script>
 
-        <script src="https://d3js.org/d3-color.v1.min.js"></script>
-        <script src="https://d3js.org/d3-interpolate.v1.min.js"></script>
-        <script src="https://d3js.org/d3-scale-chromatic.v1.min.js"></script>
-        <script src="https://d3js.org/d3-scale.v2.min.js"></script>
 
         <!-- http://bl.ocks.org/d3noob/7654694 -->
         <style>
@@ -61,7 +57,7 @@
                     .domain([0, 2, 4, 6, 8, 10])
                     .range(['#EDF8FB', '#BFD3E6', '#9EBCDA', '#8C96C6', '#8C6BB1', '#88419D', '#6E016B']);
 
-            var x = d3.scale.scaleSequential(d3.interpolateReds)
+            var x = d3.scale.linear(d3.interpolateReds)
             .domain([0, 10])
             .range([0, 400]);
 

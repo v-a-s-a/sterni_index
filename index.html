@@ -34,7 +34,8 @@
     <body>
 
         <div id="mapid"></div>
-        
+        <div style="pointer-events: none; position: absolute; top: 100px; left: 100px">Sterni Index</div>
+
         <script>
 
             var map = L.map('mapid').setView([52.506955, 13.407455], 11);
@@ -113,11 +114,16 @@
             });
 
             d3.csv("https://docs.google.com/spreadsheets/d/e/2PACX-1vQ5PIoUB3bujfpUwi2phvXx_ZecNTpRfTVGc9tq2cgsMQ5uttRxZs86p_cZ_RF9L9FrT8rTxLUNlNwF/pub?gid=939729708&single=true&output=csv",function(data){
-                shops = data.map(function(d){
-                    d.latLng = [+d.lat, +d.lon];
-                    d.cost = +d.cost;
-                    return d;
-                    });
+                shops = data.reduce((acc, d) => {
+                    if (isNaN(d.lat) || isNaN(d.lon)){
+                        // pass
+                    } else {
+                        d.latLng = [+d.lat, +d.lon];
+                        d.cost = +d.cost;
+                        acc.push(d);
+                    }
+                    return acc;
+                }, []);
                 sterniOverlay.addTo(map);
             });
 
@@ -133,8 +139,6 @@
             });
             
             geojsonLayer.addTo(map);
-
-
         </script>
 
         Form: https://goo.gl/forms/A2qCu6ymOy7Hi5bT2

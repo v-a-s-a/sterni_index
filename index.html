@@ -55,12 +55,12 @@
 
             legend.addTo(map);
 
-            var color = d3.scale.threshold()
-                    .domain([0, 0.5, 1.0, 1.5, 2.0, 2.5])
-                    .range(["#ffffcc", "#ffeda0", "#fed976", "#feb24c", "#fd8d3c", "#fc4e2a"]);
+            var color = d3.scale.linear()
+                    .domain([0.5, 1.0, 1.5, 2.0])
+                    .range(["#ffffcc", "#fed976", "#feb24c", "#fc4e2a"]);
 
             var x = d3.scale.linear(d3.interpolateReds)
-            .domain([0, 2.5])
+            .domain([0.5, 2.0])
             .range([0, 400]);
 
             var xAxis = d3.svg.axis()
